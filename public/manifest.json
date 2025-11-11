@@ -1,0 +1,33 @@
+{
+  "theme_color": "#34b681",
+  "background_color": "#34b681",
+  "display": "fullscreen",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon",
+      "background_color": "#ffffff",
+      "purpose": "any"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "background_color": "#ffffff",
+      "purpose": "any"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "background_color": "#ffffff",
+      "purpose": "any"
+    }
+  ],
+  "start_url": ".",
+  "name": "Aberturas NAO",
+  "short_name": "Aberturas NAO",
+  "description": "Aberturas NAO Sistema"
+}
