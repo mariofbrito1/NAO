@@ -147,6 +147,9 @@ export const DialogPrint = ({ pedidoGuardado, setOpenRecibo, openRecibo, setFlag
               <b>Fecha de Entrega:</b>{' '}
               {pedidoGuardado?.fechaFinalizacion ? new Date(pedidoGuardado.fechaFinalizacion).toLocaleDateString() : ''}
             </Typography>
+            <Typography variant="body2">
+              <b>Plazo de entrega:</b> {pedidoGuardado?.dias_entrega ?? 0} días
+            </Typography>
           </Grid>
         </Grid>
       </DialogTitle>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Paper, Table, TableCell, TableContainer, TableRow } from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -7,23 +7,19 @@ import OrderListRow from './OrderListRow';
 import OrderTableHead from './OrderTableHead';
 import OrderTableToolbar from './OrderTableToolbar';
 import { getComparator, stableSort } from '../../../@jumbo/utils/tableHelper';
-import { useDispatch } from 'react-redux';
- import { getOrders } from '../../../redux/actions/Pedidos'; 
-import useStyles from './index.style'; 
+import { getOrders } from '../../../redux/actions/Pedidos';
+import useStyles from './index.style';
 import NoRecordFound from './NoRecordFound';
 import DoubleScroll from './DoubleScroll';
- 
 
 const MaterialOrderList = ({ history }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  // caracteristicas de usuarios
   const { authUser } = useSelector(({ auth }) => auth);
-  const seccionesUser = authUser?.secciones;
-  ////// 
+  const seccionesUser = authUser?.secciones || [];
 
   const ID_ROL_ADM = 1;
-  //////
 
   const [orderBy, setOrderBy] = React.useState('name');
   const [order, setOrder] = React.useState('asc');
@@ -34,30 +30,50 @@ const MaterialOrderList = ({ history }) => {
   const [filterOptions, setFilterOptions] = React.useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [refresh, setRefresh] = useState(false);
-  ////////////////////////////////
 
-  const dispatch = useDispatch();
-  
-  const { pedidos  = [] } = useSelector(state => state.pedidos);
+  const { pedidos = [] } = useSelector(state => state.pedidos);
 
-   // Filtrar para que solo muestre los no presupuestos
-  const pedidosCompras = pedidos.filter(p => p.espresupuesto !== true && p.idestadoproducto != 5 && p.idestadoproducto != 6);  //saca el pedido finalizado de fabrica o entregado
+  const idRol = seccionesUser?.[0]?.id_rol;
 
+  const fetchPedidos = () => {
+    if (!idRol) return;
+
+    dispatch(
+      getOrders({
+        id_rol: idRol,
+      })
+    );
+    setOrdersFetched(true);
+  };
 
   useEffect(() => {
-    dispatch(getOrders({
-      id_rol: seccionesUser[0].id_rol
-    }));
-    setOrdersFetched(true);
-  }, [dispatch, refresh]); 
- 
+    fetchPedidos();
+  }, [dispatch, idRol, refresh]);
+
+  useEffect(() => {
+    if (!idRol) return;
+
+    const interval = setInterval(() => {
+      dispatch(
+        getOrders({
+          id_rol: idRol,
+        })
+      );
+      setOrdersFetched(true);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [dispatch, idRol]);
+
+  const pedidosCompras = pedidos.filter(
+    p => p.espresupuesto !== true && p.idestadoproducto != 5 && p.idestadoproducto != 6
+  );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrderBy(property);
     setOrder(isAsc ? 'desc' : 'asc');
   };
-
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -68,102 +84,86 @@ const MaterialOrderList = ({ history }) => {
     setPage(0);
   };
 
-   
-
-   
-  
   const listaPedidosFiltrados = pedidosCompras.filter(pedido => {
-  if (!searchTerm) return true;
-  const term = searchTerm.toLowerCase();
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase();
 
-  return (
-    pedido.id.toString().includes(term) ||
-    (pedido.nombre?.toLowerCase() || '').includes(term) ||
-    (pedido.proveedor?.toLowerCase() || '').includes(term) ||
-    (pedido.celular?.toString()).includes(term) ||
-    (pedido.producto?.toLowerCase() || '').includes(term)
-  );
-});
-
-  
-
+    return (
+      pedido.id.toString().includes(term) ||
+      (pedido.nombre?.toLowerCase() || '').includes(term) ||
+      (pedido.proveedor?.toLowerCase() || '').includes(term) ||
+      (pedido.celular?.toString() || '').includes(term) ||
+      (pedido.producto?.toLowerCase() || '').includes(term)
+    );
+  });
 
   return (
     <div className={classes.root} style={{ padding: '10xp' }}>
       <Paper className={classes.paper}>
-        <OrderTableToolbar 
+        <OrderTableToolbar
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
           rowCount={pedidosCompras.length}
           data={pedidosCompras}
           searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm} 
+          setSearchTerm={setSearchTerm}
           refresh={refresh}
           setRefresh={setRefresh}
         />
+
         <DoubleScroll>
-        {(bottomRef, onBottomScroll) => (
-          <TableContainer
-            ref={bottomRef}                 // << aquí el ref correcto
-            onScroll={onBottomScroll}       // << sincroniza con la barra de arriba
-            component="div"                 // asegura un elemento DOM directo
-            style={{ overflowX: "auto" }}   // habilita scroll horizontal
-          >
-            <Table
-              stickyHeader
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              aria-label="sticky enhanced table"
-              style={{ minWidth: 2500 }}    // fuerza ancho > contenedor para que exista el scroll
-            >
-            {pedidosCompras && pedidosCompras.length > 0 && (
-              <OrderTableHead
-                classes={classes}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-                rowCount={pedidosCompras.length}
-                isAdm={seccionesUser[0].id_rol === ID_ROL_ADM}
-              />
-            )}
-            <TableBody>
-            {listaPedidosFiltrados && listaPedidosFiltrados.length > 0 ? (
-              (() => {
-                const idsMostrados = new Set();
+          {(bottomRef, onBottomScroll) => (
+            <TableContainer ref={bottomRef} onScroll={onBottomScroll} component="div" style={{ overflowX: 'auto' }}>
+              <Table
+                stickyHeader
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                aria-label="sticky enhanced table"
+                style={{ minWidth: 2500 }}>
+                {pedidosCompras && pedidosCompras.length > 0 && (
+                  <OrderTableHead
+                    classes={classes}
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                    rowCount={pedidosCompras.length}
+                    isAdm={idRol === ID_ROL_ADM}
+                  />
+                )}
 
-                return stableSort(listaPedidosFiltrados, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const mostrarEstadoPago = !idsMostrados.has(row.id);
-                    if (mostrarEstadoPago) idsMostrados.add(row.id);
+                <TableBody>
+                  {listaPedidosFiltrados && listaPedidosFiltrados.length > 0 ? (
+                    (() => {
+                      const idsMostrados = new Set();
 
-                    return (
-                      <OrderListRow
-                        key={row.id + '-' + index}
-                        row={row}
-                        mostrarEstadoPago={mostrarEstadoPago}  // <-- PASÁ LA PROPIEDAD ACÁ
-                      />
-                    );
-                  });
-              })()
-            ) : (
-              <TableRow style={{ height: 53 * 6 }}>
-                <TableCell colSpan={7} rowSpan={10}>
-                  {isFilterApplied ? (
-                    <NoRecordFound>No existen registros con ese filtro.</NoRecordFound>
+                      return stableSort(listaPedidosFiltrados, getComparator(order, orderBy))
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) => {
+                          const mostrarEstadoPago = !idsMostrados.has(row.id);
+                          if (mostrarEstadoPago) idsMostrados.add(row.id);
+
+                          return (
+                            <OrderListRow key={row.id + '-' + index} row={row} mostrarEstadoPago={mostrarEstadoPago} />
+                          );
+                        });
+                    })()
                   ) : (
-                    <NoRecordFound>
-                      {ordersFetched ? 'No se existen Pedidos.' : 'Cargando Pedidos...'}
-                    </NoRecordFound>
+                    <TableRow style={{ height: 53 * 6 }}>
+                      <TableCell colSpan={7} rowSpan={10}>
+                        {isFilterApplied ? (
+                          <NoRecordFound>No existen registros con ese filtro.</NoRecordFound>
+                        ) : (
+                          <NoRecordFound>
+                            {ordersFetched ? 'No se existen Pedidos.' : 'Cargando Pedidos...'}
+                          </NoRecordFound>
+                        )}
+                      </TableCell>
+                    </TableRow>
                   )}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-          </Table>
-          </TableContainer>
-
-        )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </DoubleScroll>
 
         <TablePagination
@@ -175,7 +175,7 @@ const MaterialOrderList = ({ history }) => {
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleRowsPerPageChange}
         />
-      </Paper> 
+      </Paper>
     </div>
   );
 };

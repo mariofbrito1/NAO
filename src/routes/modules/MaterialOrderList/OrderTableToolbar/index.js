@@ -12,7 +12,7 @@ import { Button, Chip, InputLabel, Menu, MenuItem } from '@material-ui/core';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import Input from '@material-ui/core/Input';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux'; 
+import { useDispatch } from 'react-redux';
 import CmtSearch from '../../../../@coremat/CmtSearch';
 import useStyles from './index.style';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -21,20 +21,16 @@ import Alert from '@material-ui/lab/Alert';
 import { Snackbar } from '@material-ui/core';
 import { read, utils } from 'xlsx';
 
-const filterOptionsList = [
-  { label: 'Activo', value: 'active' },
-  
-];
+const filterOptionsList = [{ label: 'Activo', value: 'active' }];
 
 const OrderTableToolbar = ({
-   
   data,
   setData,
   rowCount,
   filterOptions,
   setFilterOptions,
   searchTerm,
-  setSearchTerm, 
+  setSearchTerm,
   refresh,
   setRefresh,
 }) => {
@@ -68,7 +64,6 @@ const OrderTableToolbar = ({
     setOpen(true);
   };*/
 
-
   const onFilterOptionClick = option => {
     setFilterOptions(prevState => {
       if (prevState.includes(option.value)) {
@@ -100,8 +95,7 @@ const OrderTableToolbar = ({
     return (
       <>
         <Tooltip title="Add to cart">
-          
-          <IconButton aria-label="Add to cart" onClick={()=>{ }}>
+          <IconButton aria-label="Add to cart" onClick={() => {}}>
             <AddShoppingCartIcon />
           </IconButton>
         </Tooltip>
@@ -112,17 +106,16 @@ const OrderTableToolbar = ({
           onClose={handleCloseAlert}
           key={{ vertical: 'top', horizontal: 'right' }}>
           <Alert onClose={handleCloseAlert} severity="success">
-           Pedido(s) agregado  
+            Pedido(s) agregado
           </Alert>
         </Snackbar>
       </>
     );
   };
-  const onSearchChange = (e) => {
+  const onSearchChange = e => {
     setSearchTerm(e.target.value);
   };
   const onSearchChipDelete = () => setSearchTerm('');
-
 
   const handleImageChange = async event => {
     event.preventDefault();
@@ -131,67 +124,72 @@ const OrderTableToolbar = ({
       const wb = read(file);
       const ws = wb.Sheets[wb.SheetNames[0]];
       const data = utils.sheet_to_json(ws);
-      
     }
   };
-
-  
 
   return (
     <React.Fragment>
       <Toolbar
         className={clsx(classes.root, {
           [classes.highlight]: 0 > 0,
-        })}> 
-          <Typography className={classes.title} variant="h3" id="tableTitle" component="div" style={{marginTop: '20px' }}>
-            <h3>Pedidos</h3>
-            <Chip style={{margin: '20px' }} icon={<NextWeek />} label={(rowCount!==1) ? rowCount+ ' Pedidos' : rowCount+ ' Pedido'} />
-            
-          </Typography> 
-          {(
-            <React.Fragment>
-              <CmtSearch onChange={onSearchChange} value={searchTerm} border={false} onlyIcon />
-              <div className={classes.chipsRoot}>
-                {searchTerm && <Chip label={searchTerm} onDelete={onSearchChipDelete} />}
-                {filterOptionsList.map(
-                  (option, index) =>
-                    filterOptions.includes(option.value) && (
-                      <Chip key={index} label={option.label} onDelete={() => onChipDelete(option)} />
-                    )
-                )}
-              </div>
-              <InputLabel htmlFor="upload-csv" style={{ cursor: 'pointer' }}>
-                <Tooltip title="import xlsx/csv">
-                  <InsertDriveFileIcon />
-                </Tooltip>
-              </InputLabel>
-              <Input type="file" id="upload-csv" style={{ display: 'none' }} onChange={handleImageChange} />
-
-              <Tooltip title="Filter list">
-                <IconButton aria-label="filter list" onClick={handleClick}>
-                  <FilterListIcon />
-                </IconButton>
+        })}>
+        <Typography
+          className={classes.title}
+          variant="h3"
+          id="tableTitle"
+          component="div"
+          style={{ marginTop: '20px' }}>
+          <h3>Lista de Pedidos</h3>
+          <Chip
+            style={{ margin: '20px' }}
+            icon={<NextWeek />}
+            label={rowCount !== 1 ? rowCount + ' Pedidos' : rowCount + ' Pedido'}
+          />
+        </Typography>
+        {
+          <React.Fragment>
+            <CmtSearch onChange={onSearchChange} value={searchTerm} border={false} onlyIcon />
+            <div className={classes.chipsRoot}>
+              {searchTerm && <Chip label={searchTerm} onDelete={onSearchChipDelete} />}
+              {filterOptionsList.map(
+                (option, index) =>
+                  filterOptions.includes(option.value) && (
+                    <Chip key={index} label={option.label} onDelete={() => onChipDelete(option)} />
+                  )
+              )}
+            </div>
+            <InputLabel htmlFor="upload-csv" style={{ cursor: 'pointer' }}>
+              <Tooltip title="import xlsx/csv">
+                <InsertDriveFileIcon />
               </Tooltip>
-              <Menu
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-                {filterOptionsList.map((option, index) => (
-                  <MenuItem key={index} onClick={() => onFilterOptionClick(option)}>
-                    <Checkbox
-                      checked={filterOptions.includes(option.value)}
-                      inputProps={{ 'aria-labelledby': option.label }}
-                    />
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </React.Fragment>
-          )}
+            </InputLabel>
+            <Input type="file" id="upload-csv" style={{ display: 'none' }} onChange={handleImageChange} />
+
+            <Tooltip title="Filter list">
+              <IconButton aria-label="filter list" onClick={handleClick}>
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}>
+              {filterOptionsList.map((option, index) => (
+                <MenuItem key={index} onClick={() => onFilterOptionClick(option)}>
+                  <Checkbox
+                    checked={filterOptions.includes(option.value)}
+                    inputProps={{ 'aria-labelledby': option.label }}
+                  />
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Menu>
+          </React.Fragment>
+        }
       </Toolbar>
     </React.Fragment>
   );
@@ -201,7 +199,7 @@ OrderTableToolbar.propTypes = {
   filterOptions: PropTypes.array,
   setFilterOptions: PropTypes.func,
   searchTerm: PropTypes.string,
-  setSearchTerm: PropTypes.func
+  setSearchTerm: PropTypes.func,
 };
 
 export default React.memo(OrderTableToolbar);

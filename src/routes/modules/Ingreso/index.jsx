@@ -81,6 +81,7 @@ export const Ingreso = () => {
     idtipopago: '1',
     porcentaje_recargo: '',
     porcentaje_descuento: '',
+    dias_entrega: '',
   });
 
   const [products, setProducts] = useState([]);
@@ -99,6 +100,11 @@ export const Ingreso = () => {
     return isNaN(n) ? 0 : n;
   };
 
+  const toInt = value => {
+    const n = parseInt(value, 10);
+    return isNaN(n) ? 0 : n;
+  };
+
   const handlePedidoChange = event => {
     const { name, value } = event.target;
 
@@ -108,7 +114,6 @@ export const Ingreso = () => {
         [name]: value,
       };
 
-      // Si cambia la forma de pago, limpiamos el porcentaje que no aplica
       if (name === 'idtipopago') {
         if (value === '2') {
           next.porcentaje_descuento = '';
@@ -146,15 +151,13 @@ export const Ingreso = () => {
 
   const importeRecargo = totalProductos * (porcentajeRecargo / 100);
   const importeDescuento = totalProductos * (porcentajeDescuento / 100);
-
   const totalFinal = totalProductos + importeRecargo - importeDescuento;
-
-  // Si no es pago parcial, el total ingresado por el usuario se compara contra el total final
   const diferencia = (toNumber(pedido.total) || 0) - totalFinal;
 
   const onCreatePedido = () => {
     const prodFinal = {
       ...pedido,
+      dias_entrega: toInt(pedido.dias_entrega),
       products,
       diferencia,
       totalProductos,
@@ -295,7 +298,30 @@ export const Ingreso = () => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={12}>
+                <Grid item xs={12} sm={6} md={6}>
+                  <Box px={10} mb={3}>
+                    <TextField
+                      fullWidth
+                      label="Días de entrega"
+                      name="dias_entrega"
+                      value={pedido.dias_entrega || ''}
+                      onChange={e => {
+                        const value = e.target.value;
+                        if (/^\d*$/.test(value)) {
+                          handlePedidoChange(e);
+                        }
+                      }}
+                      type="number"
+                      inputProps={{
+                        inputMode: 'numeric',
+                        step: 1,
+                        min: 0,
+                      }}
+                    />
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={6}>
                   <Box px={10} mb={3}>
                     <TextField
                       fullWidth
@@ -309,119 +335,117 @@ export const Ingreso = () => {
                 </Grid>
 
                 {!pedido.es_presupuesto && (
-                  <>
-                    <Grid item xs={12} sm={3} md={3}>
-                      <Box px={10} mb={3}>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={!!pedido.pago_parcial}
-                              onChange={e =>
-                                setPedido(prev => ({
-                                  ...prev,
-                                  pago_parcial: e.target.checked,
-                                }))
-                              }
-                              name="pago_parcial"
-                              color="primary"
-                            />
+                  <Grid item xs={12} sm={3} md={3}>
+                    <Box px={10} mb={3}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={!!pedido.pago_parcial}
+                            onChange={e =>
+                              setPedido(prev => ({
+                                ...prev,
+                                pago_parcial: e.target.checked,
+                              }))
+                            }
+                            name="pago_parcial"
+                            color="primary"
+                          />
+                        }
+                        label={pedido && pedido.pago_parcial ? 'Pago Completo' : 'Pago Parcial'}
+                      />
+                    </Box>
+                  </Grid>
+                )}
+
+                <Grid item xs={12} sm={pedido.es_presupuesto ? 12 : 9} md={pedido.es_presupuesto ? 12 : 9}>
+                  <Box px={10} mb={3}>
+                    <Box mb={2}>
+                      <p>
+                        <b>Forma de Pago</b>
+                      </p>
+                    </Box>
+
+                    <FormControl component="fieldset">
+                      <RadioGroup
+                        row
+                        name="idtipopago"
+                        value={pedido.idtipopago?.toString() || '1'}
+                        onChange={handlePedidoChange}>
+                        <FormControlLabel value="1" control={<Radio />} label="Efectivo" />
+                        <FormControlLabel value="2" control={<Radio />} label="Tarjeta" />
+                        <FormControlLabel value="3" control={<Radio />} label="Depósito/Transferencia" />
+                        <FormControlLabel value="4" control={<Radio />} label="Pago Combinado" />
+                      </RadioGroup>
+                    </FormControl>
+                  </Box>
+                </Grid>
+
+                {pedido.idtipopago === '2' && (
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box px={10} mb={3}>
+                      <TextField
+                        fullWidth
+                        label="Recargo % por tarjeta"
+                        name="porcentaje_recargo"
+                        value={pedido.porcentaje_recargo || ''}
+                        onChange={e => {
+                          const value = e.target.value;
+                          if (/^\d*\.?\d*$/.test(value)) {
+                            handlePedidoChange(e);
                           }
-                          label={pedido && pedido.pago_parcial ? 'Pago Completo' : 'Pago Parcial'}
-                        />
-                      </Box>
-                    </Grid>
+                        }}
+                        inputProps={{
+                          inputMode: 'decimal',
+                          step: 'any',
+                          min: 0,
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                )}
 
-                    <Grid item xs={12} sm={9} md={9}>
-                      <Box px={10} mb={3}>
-                        <Box mb={2}>
-                          <p>
-                            <b>Forma de Pago</b>
-                          </p>
-                        </Box>
+                {pedido.idtipopago === '1' && (
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box px={10} mb={3}>
+                      <TextField
+                        fullWidth
+                        label="Descuento % por contado"
+                        name="porcentaje_descuento"
+                        value={pedido.porcentaje_descuento || ''}
+                        onChange={e => {
+                          const value = e.target.value;
+                          if (/^\d*\.?\d*$/.test(value)) {
+                            handlePedidoChange(e);
+                          }
+                        }}
+                        inputProps={{
+                          inputMode: 'decimal',
+                          step: 'any',
+                          min: 0,
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                )}
 
-                        <FormControl component="fieldset">
-                          <RadioGroup
-                            row
-                            name="idtipopago"
-                            value={pedido.idtipopago?.toString() || '1'}
-                            onChange={handlePedidoChange}>
-                            <FormControlLabel value="1" control={<Radio />} label="Efectivo" />
-                            <FormControlLabel value="2" control={<Radio />} label="Tarjeta" />
-                            <FormControlLabel value="3" control={<Radio />} label="Depósito/Transferencia" />
-                            <FormControlLabel value="4" control={<Radio />} label="Pago Combinado" />
-                          </RadioGroup>
-                        </FormControl>
-                      </Box>
-                    </Grid>
-
-                    {pedido.idtipopago === '2' && (
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Box px={10} mb={3}>
-                          <TextField
-                            fullWidth
-                            label="Recargo % por tarjeta"
-                            name="porcentaje_recargo"
-                            value={pedido.porcentaje_recargo || ''}
-                            onChange={e => {
-                              const value = e.target.value;
-                              if (/^\d*\.?\d*$/.test(value)) {
-                                handlePedidoChange(e);
-                              }
-                            }}
-                            inputProps={{
-                              inputMode: 'decimal',
-                              step: 'any',
-                              min: 0,
-                            }}
-                          />
-                        </Box>
-                      </Grid>
-                    )}
-
-                    {pedido.idtipopago === '1' && (
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Box px={10} mb={3}>
-                          <TextField
-                            fullWidth
-                            label="Descuento % por contado"
-                            name="porcentaje_descuento"
-                            value={pedido.porcentaje_descuento || ''}
-                            onChange={e => {
-                              const value = e.target.value;
-                              if (/^\d*\.?\d*$/.test(value)) {
-                                handlePedidoChange(e);
-                              }
-                            }}
-                            inputProps={{
-                              inputMode: 'decimal',
-                              step: 'any',
-                              min: 0,
-                            }}
-                          />
-                        </Box>
-                      </Grid>
-                    )}
-
-                    <Grid item xs={12} sm={6} md={6}>
-                      {!pedido.pago_parcial && (
-                        <Box px={10} mb={3}>
-                          <TextField
-                            fullWidth
-                            label="Total en Pesos"
-                            name="total"
-                            value={pedido.total || ''}
-                            onChange={e => {
-                              const value = e.target.value;
-                              if (/^\d*\.?\d*$/.test(value)) {
-                                handlePedidoChange(e);
-                              }
-                            }}
-                            required
-                          />
-                        </Box>
-                      )}
-                    </Grid>
-                  </>
+                {!pedido.es_presupuesto && !pedido.pago_parcial && (
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Box px={10} mb={3}>
+                      <TextField
+                        fullWidth
+                        label="Total en Pesos"
+                        name="total"
+                        value={pedido.total || ''}
+                        onChange={e => {
+                          const value = e.target.value;
+                          if (/^\d*\.?\d*$/.test(value)) {
+                            handlePedidoChange(e);
+                          }
+                        }}
+                        required
+                      />
+                    </Box>
+                  </Grid>
                 )}
 
                 <Grid item xs={12} sm={12} md={12}>
@@ -574,7 +598,7 @@ export const Ingreso = () => {
                           </Typography>
                         </Grid>
 
-                        {pedido && !pedido.pago_parcial && (
+                        {!pedido.es_presupuesto && !pedido.pago_parcial && (
                           <>
                             <Grid item xs={6}>
                               <Typography variant="subtitle1" align="right">
