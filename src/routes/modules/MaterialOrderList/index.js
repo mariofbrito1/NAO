@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Paper, Table, TableCell, TableContainer, TableRow } from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,8 +18,10 @@ const MaterialOrderList = ({ history }) => {
 
   const { authUser } = useSelector(({ auth }) => auth);
   const seccionesUser = authUser?.secciones || [];
+  const { pedidos = [] } = useSelector(state => state.pedidos);
 
   const ID_ROL_ADM = 1;
+  const idRol = seccionesUser?.[0]?.id_rol;
 
   const [orderBy, setOrderBy] = React.useState('name');
   const [order, setOrder] = React.useState('asc');
@@ -31,39 +33,56 @@ const MaterialOrderList = ({ history }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [refresh, setRefresh] = useState(false);
 
-  const { pedidos = [] } = useSelector(state => state.pedidos);
+  const fetchPedidos = useCallback(() => {
+    if (!idRol) {
+      console.log('[MaterialOrderList] fetchPedidos cancelado: no hay idRol');
+      return;
+    }
 
-  const idRol = seccionesUser?.[0]?.id_rol;
-
-  const fetchPedidos = () => {
-    if (!idRol) return;
+    console.log('[MaterialOrderList] getOrders ->', {
+      fecha: new Date().toISOString(),
+      idRol,
+    });
 
     dispatch(
       getOrders({
         id_rol: idRol,
       })
     );
+
     setOrdersFetched(true);
-  };
+  }, [dispatch, idRol]);
 
   useEffect(() => {
+    console.log('[MaterialOrderList] useEffect inicial/manual refresh', {
+      idRol,
+      refresh,
+    });
     fetchPedidos();
-  }, [dispatch, idRol, refresh]);
+  }, [fetchPedidos, refresh]);
 
   useEffect(() => {
     if (!idRol) return;
 
+    console.log('[MaterialOrderList] iniciando intervalo de auto refresh cada 4s');
+
     const interval = setInterval(() => {
-      dispatch(
-        getOrders({
-          id_rol: idRol,
-        })
-      );
-      setOrdersFetched(true);
+      console.log('[MaterialOrderList] auto refresh tick', new Date().toISOString());
+      fetchPedidos();
     }, 4000);
 
-    return () => clearInterval(interval);
-  }, [dispatch, idRol]);
+    return () => {
+      console.log('[MaterialOrderList] limpiando intervalo');
+      clearInterval(interval);
+    };
+  }, [fetchPedidos, idRol]);
+
+  useEffect(() => {
+    console.log('[MaterialOrderList] pedidos actualizados en store -> cantidad:', pedidos.length);
+    if (pedidos.length > 0) {
+      console.log('[MaterialOrderList] primer pedido:', pedidos[0]);
+    }
+  }, [pedidos]);
 
   const pedidosCompras = pedidos.filter(
     p => p.espresupuesto !== true && p.idestadoproducto != 5 && p.idestadoproducto != 6

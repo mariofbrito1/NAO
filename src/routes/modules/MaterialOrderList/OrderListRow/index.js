@@ -50,6 +50,7 @@ const OrderListRow = ({ row, mostrarEstadoPago, onOrderDelete }) => {
   const [estadoPedido, setEstadoPedido] = useState(row.idestado);
   const [estadoPago, setEstadoPago] = useState(row.idestadopago);
   const [estadoProducto, setEstadoProducto] = useState(row.idestadoproducto);
+
   const [order, setOrder] = useState({
     id: row.id,
     ida: row.ida,
@@ -58,17 +59,48 @@ const OrderListRow = ({ row, mostrarEstadoPago, onOrderDelete }) => {
     idestadoproducto: row.idestadoproducto,
   });
 
+  useEffect(() => {
+    setEstadoPedido(row.idestado);
+    setEstadoPago(row.idestadopago);
+    setEstadoProducto(row.idestadoproducto);
+
+    setOrder({
+      id: row.id,
+      ida: row.ida,
+      idestado: row.idestado,
+      idestadopago: row.idestadopago,
+      idestadoproducto: row.idestadoproducto,
+    });
+
+    console.log('Row refrescada desde backend/store:', {
+      id: row.id,
+      ida: row.ida,
+      idestado: row.idestado,
+      idestadopago: row.idestadopago,
+      idestadoproducto: row.idestadoproducto,
+    });
+  }, [row.id, row.ida, row.idestado, row.idestadopago, row.idestadoproducto]);
+
   const handleOrderChange = event => {
     event.preventDefault();
-    setOrder({
+
+    const nuevoOrder = {
       ...order,
       [event.target.name]: event.target.value,
+    };
+
+    console.log('Cambio local combo:', {
+      campo: event.target.name,
+      valor: event.target.value,
+      nuevoOrder,
     });
+
+    setOrder(nuevoOrder);
   };
 
   useEffect(() => {
     if (order) {
-      console.log('Order Update', order);
+      console.log('Order Update enviado al backend:', order);
       dispatch(updatePedidos(order.id, order, () => {}));
     }
   }, [order, dispatch]);
@@ -197,7 +229,6 @@ const OrderListRow = ({ row, mostrarEstadoPago, onOrderDelete }) => {
       </TableCell>
 
       <TableCell align="center">{row.dias_entrega ? `${row.dias_entrega} días` : '0 días'}</TableCell>
-
       <TableCell align="center">{row.linea}</TableCell>
       <TableCell align="center">{row.color}</TableCell>
       <TableCell align="center">{row.ancho}</TableCell>
