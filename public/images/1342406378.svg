@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" id="svg6840" viewBox="0 0 144 144" version="1.1">
+ <defs id="defs6842">
+  <linearGradient id="linearGradient6731" y2="814.71" gradientUnits="userSpaceOnUse" x2="543.41" y1="814.71" x1="526.21">
+   <stop id="stop6700" stop-color="#5e5e5e" offset="0"/>
+   <stop id="stop6702" stop-color="#898989" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient6733" gradientUnits="userSpaceOnUse" cy="814.71" cx="534.81" gradientTransform="matrix(1 0 0 1.0405 0 -33.029)" r="8.5997">
+   <stop id="stop5588-1" stop-color="#252525" offset="0"/>
+   <stop id="stop6687" stop-color="#754110" offset=".20846"/>
+   <stop id="stop6683" stop-color="#563e20" offset=".53041"/>
+   <stop id="stop6685" stop-color="#322f2d" offset=".68624"/>
+   <stop id="stop5590-1" stop-color="#2b2a2a" offset="1"/>
+  </radialGradient>
+ </defs>
+ <g id="layer1" transform="translate(-50.857 -577.5)">
+  <g id="g4074" transform="matrix(1.467 0 0 1.467 -661.4 -550.85)">
+   <g id="g6718" transform="translate(-1.3633 -95.43)">
+    <path id="path3100" d="m591.41 814.67c0 26.859-21.686 48.633-48.438 48.633-26.751 0-48.438-21.774-48.438-48.633s21.686-48.633 48.438-48.633c26.751 0 48.438 21.774 48.438 48.633z" transform="matrix(1.0132 0 0 1.0092 -14.202 91.512)" fill="#1a1a1a"/>
+    <path id="path3870" d="m591.41 814.67c0 27.454-21.686 49.71-48.438 49.71-26.751 0-48.438-22.256-48.438-49.71s21.686-49.71 48.438-49.71c26.751 0 48.438 22.256 48.438 49.71z" transform="matrix(.79653 0 0 .75304 103.45 300.16)" fill="#333"/>
+    <path id="path6716" d="m591.41 814.67c0 27.454-21.686 49.71-48.438 49.71-26.751 0-48.438-22.256-48.438-49.71s21.686-49.71 48.438-49.71c26.751 0 48.438 22.256 48.438 49.71z" transform="matrix(.74566 0 0 .70495 131.08 339.34)" stroke="#7d7d7d" stroke-width="3.7108" fill="none"/>
+    <path id="path6689" d="m748 1041.1c-2.813 0-5.5783 0.2092-8.2812 0.5937 0 0 2.3621 26.48-7 33.281-9.3621 6.8012-35.219-3.7813-35.219-3.7813-2.4454 4.6758-4.2035 9.735-5.1875 15.062 0 0 27.337 6.5995 30.969 17.781 3.6317 11.182-14.25 31.781-14.25 31.781 3.9897 3.6775 8.5391 6.7874 13.5 9.2187 0 0 14.023-23.031 25.469-23.031s25.469 23.031 25.469 23.031c4.9609-2.4313 9.5103-5.5412 13.5-9.2187 0 0-17.882-20.6-14.25-31.781 3.6317-11.182 30.969-17.781 30.969-17.781-0.98402-5.3275-2.7421-10.387-5.1875-15.062 0 0-25.857 10.582-35.219 3.7813-9.3621-6.8012-7-33.281-7-33.281-2.703-0.3845-5.4682-0.5937-8.2812-0.5937z" transform="matrix(.68164 0 0 .68164 26.08 166.56)" fill="#939393"/>
+    <path id="path5720" d="m591.41 814.67c0 27.454-21.686 49.71-48.438 49.71-26.751 0-48.438-22.256-48.438-49.71s21.686-49.71 48.438-49.71c26.751 0 48.438 22.256 48.438 49.71z" transform="matrix(.79653 0 0 .75304 103.45 300.16)" stroke="#939393" stroke-width="3.7108" fill="none"/>
+    <path id="path6694" d="m543.41 814.71c0 4.942-3.8502 8.9484-8.5997 8.9484s-8.5997-4.0063-8.5997-8.9484 3.8502-8.9484 8.5997-8.9484 8.5997 4.0063 8.5997 8.9484z" transform="matrix(1.4015 0 0 1.3898 -213.6 -218.68)" fill="url(#linearGradient6731)"/>
+    <path id="path6083" d="m543.41 814.71c0 4.942-3.8502 8.9484-8.5997 8.9484s-8.5997-4.0063-8.5997-8.9484 3.8502-8.9484 8.5997-8.9484 8.5997 4.0063 8.5997 8.9484z" transform="matrix(.99517 0 0 .98689 3.7213 109.62)" fill="url(#radialGradient6733)"/>
+    <path id="path6706" d="m764 1084c0 2.2091-1.7909 4-4 4s-4-1.7909-4-4 1.7909-4 4-4 4 1.7909 4 4z" transform="matrix(.68164 0 0 .68164 26.762 165.88)" fill="#5e5b51"/>
+    <path id="path6710" d="m764 1084c0 2.2091-1.7909 4-4 4s-4-1.7909-4-4 1.7909-4 4-4 4 1.7909 4 4z" transform="matrix(.68164 0 0 .68164 8.3573 165.88)" fill="#5e5b51"/>
+    <path id="path6712" d="m764 1084c0 2.2091-1.7909 4-4 4s-4-1.7909-4-4 1.7909-4 4-4 4 1.7909 4 4z" transform="matrix(.68164 0 0 .68164 26.762 183.6)" fill="#5e5b51"/>
+    <path id="path6714" d="m764 1084c0 2.2091-1.7909 4-4 4s-4-1.7909-4-4 1.7909-4 4-4 4 1.7909 4 4z" transform="matrix(.68164 0 0 .68164 8.3573 183.6)" fill="#5e5b51"/>
+   </g>
+  </g>
+ </g>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+    <dc:publisher>
+     <cc:Agent rdf:about="http://openclipart.org/">
+      <dc:title>Openclipart</dc:title>
+     </cc:Agent>
+    </dc:publisher>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+</svg>
