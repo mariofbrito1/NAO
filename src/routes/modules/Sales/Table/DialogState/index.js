@@ -73,12 +73,7 @@ const MaxWidthDialog = ({ open, setOpen, row, estado, restart_data }) => {
             <div
               // noValidate
               // component="form"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                margin: 'auto',
-                width: 'fit-content',
-              }}>
+              style={{ display: 'flex', flexDirection: 'column', margin: 'auto', width: 'fit-content' }}>
               <FormControl style={{ marginTop: 16, minWidth: 120 }}>
                 <InputLabel htmlFor="max-width">Estados</InputLabel>
                 <Select

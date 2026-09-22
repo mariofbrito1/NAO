@@ -641,11 +641,7 @@ export const Ingreso = () => {
                       variant="contained"
                       onClick={onCreatePedido}
                       disabled={!btn_enable}
-                      style={{
-                        minWidth: '250px',
-                        height: '48px',
-                        fontSize: '16px',
-                      }}>
+                      style={{ minWidth: '250px', height: '48px', fontSize: '16px' }}>
                       Aceptar
                     </Button>
                   </Box>

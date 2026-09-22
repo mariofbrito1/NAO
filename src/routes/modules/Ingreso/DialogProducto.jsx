@@ -38,14 +38,7 @@ export default function AlertDialogSlide({ open, handleClose, onSave }) {
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
-        PaperProps={{
-          style: {
-            width: '90vw',
-            height: '85vh',
-            margin: 0,
-            maxWidth: 'none', // importante para permitir mayor tamaño
-          },
-        }}>
+        PaperProps={{ style: { width: '90vw', height: '85vh', margin: 0, maxWidth: 'none' } }}>
         <DialogTitle>Producto Ingreso</DialogTitle>
         <DialogContent>
           <Producto stateProd={stateProd} setStateProd={setStateProd} resetFlag={resetFlag} />
@@ -67,13 +60,7 @@ export default function AlertDialogSlide({ open, handleClose, onSave }) {
           </Button>
           <Button
             disabled={!btn_enable}
-            style={{
-              margin: '20px',
-              minWidth: '250px',
-              height: '48px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-            }}
+            style={{ margin: '20px', minWidth: '250px', height: '48px', fontSize: '16px', fontWeight: 'bold' }}
             onClick={() => evaluate()}
             variant="contained">
             Aceptar
