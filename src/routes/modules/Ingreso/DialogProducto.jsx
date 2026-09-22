@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import Producto from './Producto';
 import { logic_btn } from './logic.js';
 
@@ -39,7 +39,7 @@ export default function AlertDialogSlide({ open, handleClose, onSave }) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
         PaperProps={{
-          sx: {
+          style: {
             width: '90vw',
             height: '85vh',
             margin: 0,
@@ -52,7 +52,7 @@ export default function AlertDialogSlide({ open, handleClose, onSave }) {
         </DialogContent>
         <DialogActions>
           <Button
-            sx={{
+            style={{
               margin: '20px',
               background: '#f44336',
               borderColor: '#f44336',
@@ -60,11 +60,6 @@ export default function AlertDialogSlide({ open, handleClose, onSave }) {
               height: '48px',
               fontSize: '16px',
               fontWeight: 'bold',
-              '&:hover': {
-                backgroundColor: '#fc1100ff',
-                color: '#fff',
-                borderColor: '#f01202ff',
-              },
             }}
             onClick={handleClose}
             variant="contained">
@@ -72,16 +67,12 @@ export default function AlertDialogSlide({ open, handleClose, onSave }) {
           </Button>
           <Button
             disabled={!btn_enable}
-            sx={{
+            style={{
               margin: '20px',
               minWidth: '250px',
               height: '48px',
               fontSize: '16px',
               fontWeight: 'bold',
-              '&:hover': {
-                backgroundColor: '#1404f0ff',
-                color: '#fff',
-              },
             }}
             onClick={() => evaluate()}
             variant="contained">

@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { ExportToExcel } from './listExport';
 import useStyles from './index.style';
 import moment from 'moment';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import InputLabel from '@material-ui/core/InputLabel';
 
 const PedidosTableToolbar = ({ Data, DataStock, setOpen = () => {}, FechasCierre }) => {

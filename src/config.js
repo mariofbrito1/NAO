@@ -1,7 +1,7 @@
-// este no funciona es a modo de ejemplo
+const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5006';
+
 export const config = {
-    ip: 'localhost',
-    port: 5006,
+  apiUrl: apiUrl.replace(/\/$/, ''),
 };
 
 export default config;

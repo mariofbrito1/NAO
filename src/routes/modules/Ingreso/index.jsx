@@ -11,7 +11,7 @@ import {
   Radio,
 } from '@material-ui/core';
 
-import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import IconButton from '@material-ui/core/IconButton';
@@ -641,14 +641,10 @@ export const Ingreso = () => {
                       variant="contained"
                       onClick={onCreatePedido}
                       disabled={!btn_enable}
-                      sx={{
+                      style={{
                         minWidth: '250px',
                         height: '48px',
                         fontSize: '16px',
-                        '&:hover': {
-                          backgroundColor: '#1404f0ff',
-                          color: '#fff',
-                        },
                       }}>
                       Aceptar
                     </Button>

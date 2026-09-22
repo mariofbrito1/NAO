@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, Typography, Button, Box, Grid, Divider } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, Button, Box, Grid, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

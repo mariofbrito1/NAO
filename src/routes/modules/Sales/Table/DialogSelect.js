@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Box } from '@material-ui/core';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import moment from 'moment';
 import { TextField } from '@material-ui/core';
 
@@ -37,7 +37,7 @@ export default function DialogSelect({ setOpenExt, open, actionCerrarPeriodo, Fe
 
   const [fec, setfechas] = useState({
     fecha_fin: null,
-    fecha_inicio: null, 
+    fecha_inicio: null,
   });
 
   useEffect(() => {
@@ -46,12 +46,10 @@ export default function DialogSelect({ setOpenExt, open, actionCerrarPeriodo, Fe
       setfechas({
         ...fec,
         fecha_fin: moment(FechasCierre.fecha_fin).format('YYYY-MM-DD'),
-        fecha_inicio: moment(FechasCierre.fecha_inicio).format('YYYY-MM-DD'), 
+        fecha_inicio: moment(FechasCierre.fecha_inicio).format('YYYY-MM-DD'),
       });
     }
   }, [FechasCierre]);
-
-   
 
   const handleAccept = () => {
     actionCerrarPeriodo(fec);
@@ -77,7 +75,7 @@ export default function DialogSelect({ setOpenExt, open, actionCerrarPeriodo, Fe
               <h3>Modificar de Período</h3>
             </Grid>
           </Grid>
-         
+
           <DialogContent>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
